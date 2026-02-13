@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Royal Valentine 💖</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+text-align:center;
+color:white;
+background:#000;
+}
+
+.background{
+position:fixed;
+width:100%;
+height:100%;
+background-size:contain;
+background-repeat:no-repeat;
+background-position:center;
+background-color:#000;
+transition:1.5s ease-in-out;
+z-index:-2;
+}
+
+.overlay{
+position:fixed;
+width:100%;
+height:100%;
+background:linear-gradient(rgba(255,0,85,0.4),rgba(77,0,31,0.7));
+z-index:-1;
+}
+
+.heart{
+position:absolute;
+color:#ff1e56;
+font-size:20px;
+animation: floatUp 6s linear infinite;
+}
+
+@keyframes floatUp{
+0%{transform:translateY(100vh);opacity:1;}
+100%{transform:translateY(-10vh);opacity:0;}
+}
+
+.container{
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(15px);
+padding:40px;
+border-radius:25px;
+width:90%;
+max-width:400px;
+box-shadow:0 10px 40px rgba(0,0,0,0.3);
+animation:pop 1s ease;
+}
+
+@keyframes pop{
+from{transform:scale(0);}
+to{transform:scale(1);}
+}
+
+button{
+padding:12px 25px;
+font-size:18px;
+margin:15px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+transition:0.3s;
+}
+
+#yesBtn{
+background:#ff1e56;
+color:white;
+}
+
+#noBtn{
+background:#ccc;
+position:fixed;
+}
+
+.messageBox{
+font-size:22px;
+min-height:60px;
+margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="background" id="bg"></div>
+<div class="overlay"></div>
+
+<!-- Audio Files -->
+<audio id="heartbeatSound" src="heartbeat.mp3"></audio>
+<audio id="romanticSong" src="romantic-song.mp3"></audio>
+
+<div class="container">
+<h2>💖 Mr. Abdus Samad 💖</h2>
+<h3>Will You Be My Valentine? 💘</h3>
+
+<button id="yesBtn">YES 💕</button>
+<button id="noBtn">NO 😢</button>
+
+<div class="messageBox" id="messageBox"></div>
+</div>
+
+<script>
+
+/* Background Slideshow */
+const images=["1.webp","2.webp","3.webp","4.webp","5.webp"];
+let bgIndex=0;
+const bg=document.getElementById("bg");
+
+function changeBg(){
+bg.style.backgroundImage=`url(${images[bgIndex]})`;
+bgIndex=(bgIndex+1)%images.length;
+}
+changeBg();
+setInterval(changeBg,4000);
+
+/* Floating Hearts */
+setInterval(()=>{
+const heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="💖";
+heart.style.left=Math.random()*100+"vw";
+heart.style.fontSize=(20+Math.random()*25)+"px";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),6000);
+},400);
+
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const messageBox=document.getElementById("messageBox");
+const romanticSong=document.getElementById("romanticSong");
+const heartbeatSound=document.getElementById("heartbeatSound");
+
+let yesSize=1;
+
+function moveNo(){
+const x=Math.random()*(window.innerWidth-noBtn.offsetWidth-20);
+const y=Math.random()*(window.innerHeight-noBtn.offsetHeight-20);
+noBtn.style.left=x+"px";
+noBtn.style.top=y+"px";
+yesSize+=0.1;
+yesBtn.style.transform=`scale(${yesSize})`;
+}
+
+noBtn.addEventListener("mouseover",moveNo);
+noBtn.addEventListener("touchstart",moveNo);
+
+const loveMessages=[
+"I love you ❤️",
+"My favorite man 💘",
+"Forever and always 💞"
+];
+
+let msgIndex=0;
+
+yesBtn.addEventListener("click",()=>{
+
+yesBtn.disabled=true;
+
+/* ❤️ Heartbeat first */
+heartbeatSound.volume=1;
+heartbeatSound.play();
+
+/* After 3 seconds → stop heartbeat & start voice */
+setTimeout(()=>{
+
+heartbeatSound.pause();
+heartbeatSound.currentTime=0;
+
+/* Voice */
+const speech=new SpeechSynthesisUtterance(
+"I love you Mister Abdus Samad"
+);
+speech.rate=0.9;
+speech.pitch=1;
+speech.lang="en-US";
+
+window.speechSynthesis.speak(speech);
+
+speech.onend=()=>{
+
+/* 🎵 Soft Fade In Song */
+romanticSong.volume=0;
+romanticSong.currentTime=0;
+romanticSong.play();
+
+let fade=setInterval(()=>{
+if(romanticSong.volume<1){
+romanticSong.volume+=0.05;
+}else{
+clearInterval(fade);
+}
+},300);
+
+};
+
+},3000);
+
+document.body.style.background="linear-gradient(135deg,#ff1e56,#8b004b)";
+showMessages();
+
+});
+
+function showMessages(){
+if(msgIndex<loveMessages.length){
+messageBox.innerText=loveMessages[msgIndex];
+msgIndex++;
+setTimeout(showMessages,1500);
+}
+}
+
+</script>
+
+</body>
+</html>
