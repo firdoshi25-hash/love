@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Royal Valentine 💖</title>
 
 <style>
@@ -95,6 +96,22 @@ font-size:22px;
 min-height:60px;
 margin-top:20px;
 }
+
+/* 💖 Heart Gift */
+#heartGift{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%) scale(0);
+font-size:90px;
+background:#ff1e56;
+color:white;
+padding:35px;
+border-radius:50%;
+box-shadow:0 0 50px #ff1e56;
+z-index:999;
+transition:0.6s;
+}
 </style>
 </head>
 
@@ -103,9 +120,8 @@ margin-top:20px;
 <div class="background" id="bg"></div>
 <div class="overlay"></div>
 
-<!-- Audio Files -->
-<audio id="heartbeatSound" src="heartbeat.mp3"></audio>
-<audio id="romanticSong" src="romantic-song.mp3"></audio>
+<audio id="heartbeatSound" src="heartbeat.mp3" preload="auto"></audio>
+<audio id="romanticSong" src="romantic-song.mp3" preload="auto"></audio>
 
 <div class="container">
 <h2>💖 Mr. Abdus Samad 💖</h2>
@@ -116,6 +132,9 @@ margin-top:20px;
 
 <div class="messageBox" id="messageBox"></div>
 </div>
+
+<!-- 💖 Heart Gift Popup -->
+<div id="heartGift">💖</div>
 
 <script>
 
@@ -147,6 +166,7 @@ const noBtn=document.getElementById("noBtn");
 const messageBox=document.getElementById("messageBox");
 const romanticSong=document.getElementById("romanticSong");
 const heartbeatSound=document.getElementById("heartbeatSound");
+const heartGift=document.getElementById("heartGift");
 
 let yesSize=1;
 
@@ -170,21 +190,26 @@ const loveMessages=[
 
 let msgIndex=0;
 
-yesBtn.addEventListener("click",()=>{
+yesBtn.addEventListener("click",function(){
 
 yesBtn.disabled=true;
 
-/* ❤️ Heartbeat first */
+/* 💖 Show Heart Gift */
+heartGift.style.transform="translate(-50%,-50%) scale(1.2)";
+setTimeout(()=>{
+heartGift.style.transform="translate(-50%,-50%) scale(0)";
+},2000);
+
+/* ❤️ Heartbeat */
 heartbeatSound.volume=1;
 heartbeatSound.play();
 
-/* After 3 seconds → stop heartbeat & start voice */
-setTimeout(()=>{
+setTimeout(function(){
 
 heartbeatSound.pause();
 heartbeatSound.currentTime=0;
 
-/* Voice */
+/* 🎙 Voice */
 const speech=new SpeechSynthesisUtterance(
 "I love you Mister Abdus Samad"
 );
@@ -194,20 +219,19 @@ speech.lang="en-US";
 
 window.speechSynthesis.speak(speech);
 
-speech.onend=()=>{
+speech.onend=function(){
 
 /* 🎵 Soft Fade In Song */
 romanticSong.volume=0;
-romanticSong.currentTime=0;
 romanticSong.play();
 
-let fade=setInterval(()=>{
+let fade=setInterval(function(){
 if(romanticSong.volume<1){
 romanticSong.volume+=0.05;
 }else{
 clearInterval(fade);
 }
-},300);
+},200);
 
 };
 
