@@ -1,7 +1,7 @@
+`
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Royal Valentine 💖</title>
 
 <style>
@@ -96,21 +96,112 @@ font-size:22px;
 min-height:60px;
 margin-top:20px;
 }
+</style>
+</head>
 
-/* 💖 Heart Gift */
-#heartGift{
+... (132 lines left)
+
+message.txt
+5 KB
+﻿
+Khushi(HP)
+khushi044398
+<!DOCTYPE html>
+<html>
+<head>
+<title>Royal Valentine 💖</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+text-align:center;
+color:white;
+background:#000;
+}
+
+.background{
 position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%) scale(0);
-font-size:90px;
+width:100%;
+height:100%;
+background-size:contain;
+background-repeat:no-repeat;
+background-position:center;
+background-color:#000;
+transition:1.5s ease-in-out;
+z-index:-2;
+}
+
+.overlay{
+position:fixed;
+width:100%;
+height:100%;
+background:linear-gradient(rgba(255,0,85,0.4),rgba(77,0,31,0.7));
+z-index:-1;
+}
+
+.heart{
+position:absolute;
+color:#ff1e56;
+font-size:20px;
+animation: floatUp 6s linear infinite;
+}
+
+@keyframes floatUp{
+0%{transform:translateY(100vh);opacity:1;}
+100%{transform:translateY(-10vh);opacity:0;}
+}
+
+.container{
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(15px);
+padding:40px;
+border-radius:25px;
+width:90%;
+max-width:400px;
+box-shadow:0 10px 40px rgba(0,0,0,0.3);
+animation:pop 1s ease;
+}
+
+@keyframes pop{
+from{transform:scale(0);}
+to{transform:scale(1);}
+}
+
+button{
+padding:12px 25px;
+font-size:18px;
+margin:15px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+transition:0.3s;
+}
+
+#yesBtn{
 background:#ff1e56;
 color:white;
-padding:35px;
-border-radius:50%;
-box-shadow:0 0 50px #ff1e56;
-z-index:999;
-transition:0.6s;
+}
+
+#noBtn{
+background:#ccc;
+position:fixed;
+}
+
+.messageBox{
+font-size:22px;
+min-height:60px;
+margin-top:20px;
 }
 </style>
 </head>
@@ -120,8 +211,9 @@ transition:0.6s;
 <div class="background" id="bg"></div>
 <div class="overlay"></div>
 
-<audio id="heartbeatSound" src="heartbeat.mp3" preload="auto"></audio>
-<audio id="romanticSong" src="romantic-song.mp3" preload="auto"></audio>
+<!-- Audio Files -->
+<audio id="heartbeatSound" src="heartbeat.mp3"></audio>
+<audio id="romanticSong" src="romantic-song.mp3"></audio>
 
 <div class="container">
 <h2>💖 Mr. Abdus Samad 💖</h2>
@@ -132,9 +224,6 @@ transition:0.6s;
 
 <div class="messageBox" id="messageBox"></div>
 </div>
-
-<!-- 💖 Heart Gift Popup -->
-<div id="heartGift">💖</div>
 
 <script>
 
@@ -166,7 +255,6 @@ const noBtn=document.getElementById("noBtn");
 const messageBox=document.getElementById("messageBox");
 const romanticSong=document.getElementById("romanticSong");
 const heartbeatSound=document.getElementById("heartbeatSound");
-const heartGift=document.getElementById("heartGift");
 
 let yesSize=1;
 
@@ -183,33 +271,76 @@ noBtn.addEventListener("mouseover",moveNo);
 noBtn.addEventListener("touchstart",moveNo);
 
 const loveMessages=[
-"I love you ❤️",
+  "I love you ❤️",
+"I miss you 💕",
+"I hug you 🤗",
+"I kiss you 💋",
+"You are my world 🌍",
+"Forever yours 💖",
+"My jaan 💘",
+"You are my happiness 😍",
+"Only you 💞",
+"My heartbeat 💓",
+"My dream 💫",
+"My everything 🌹",
+"My angel 👼",
+"I adore you 💕",
+"You complete me 💞",
+"Always together 💑",
+"My sunshine ☀️",
+"My moon 🌙",
+"My star ⭐",
+"My love 💓",
+"Endless love 💖",
+"Sweetheart 💘",
+"My king 👑",
+"My hero 🥰",
+"Cutest ever 😘",
+"My heart 💝",
+"Soulmate 💞",
+"My life 💓",
+"My forever 💖",
+"My jaaneman 💘",
+"I cherish you 💕",
+"My destiny 💫",
+"My passion 🔥",
+"My romance 🌹",
+"My blessing 🙏",
+"My dream boy 💕",
+"You are magic ✨",
+"My lucky charm 🍀",
+"My heart beat 💓",
+"I need you 💖",
+"I trust you 💞",
 "My favorite man 💘",
-"Forever and always 💞"
+"Stay mine forever 💕",
+"Never leave me 🌹",
+"You are special 💖",
+"I feel safe with you 🤗",
+"I smile because of you 😊",
+"My love story ❤️",
+"You are perfect 💓",
+"My royal king 👑"
+  
 ];
 
 let msgIndex=0;
 
-yesBtn.addEventListener("click",function(){
+yesBtn.addEventListener("click",()=>{
 
 yesBtn.disabled=true;
 
-/* 💖 Show Heart Gift */
-heartGift.style.transform="translate(-50%,-50%) scale(1.2)";
-setTimeout(()=>{
-heartGift.style.transform="translate(-50%,-50%) scale(0)";
-},2000);
-
-/* ❤️ Heartbeat */
+/* ❤️ Heartbeat first */
 heartbeatSound.volume=1;
 heartbeatSound.play();
 
-setTimeout(function(){
+/* After 3 seconds → stop heartbeat & start voice */
+setTimeout(()=>{
 
 heartbeatSound.pause();
 heartbeatSound.currentTime=0;
 
-/* 🎙 Voice */
+/* Voice */
 const speech=new SpeechSynthesisUtterance(
 "I love you Mister Abdus Samad"
 );
@@ -219,19 +350,20 @@ speech.lang="en-US";
 
 window.speechSynthesis.speak(speech);
 
-speech.onend=function(){
+speech.onend=()=>{
 
 /* 🎵 Soft Fade In Song */
 romanticSong.volume=0;
+romanticSong.currentTime=0;
 romanticSong.play();
 
-let fade=setInterval(function(){
+let fade=setInterval(()=>{
 if(romanticSong.volume<1){
 romanticSong.volume+=0.05;
 }else{
 clearInterval(fade);
 }
-},200);
+},300);
 
 };
 
@@ -254,3 +386,5 @@ setTimeout(showMessages,1500);
 
 </body>
 </html>
+message.txt
+5 KB
